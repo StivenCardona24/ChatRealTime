@@ -6,6 +6,7 @@ import morgan from "morgan";
 import personRoute from "./routes/person.route";
 import chatRoute from "./routes/chat.route";
 import messageRoute from "./routes/message.route";
+import loginRoute from "./routes/login.route"
 
 
 
@@ -33,5 +34,6 @@ app.get("/", (req, res) => {
 app.use("/person", personRoute);
 app.use("/chat", chatRoute);
 app.use("/message", messageRoute);
+app.use("/login", loginRoute)
 
 export default app;

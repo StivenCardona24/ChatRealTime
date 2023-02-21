@@ -14,7 +14,7 @@ const addMessage = async (req, res) =>{
             res.send(error);
         }
         else{
-            createQueue(newMessage, `chat${newMessage.id_chat}`)
+            createQueue(newMessage, `chat${newMessage.id_chat}${newMessage.id_personSend}`)
             res.status(200).json({message: "Mensaje creado"});
 
         }
@@ -46,8 +46,13 @@ async function createQueue(msgs, queue){
     const res = await channel.assertQueue(queue);
     console.log("Queue Created...");
 
-        await channel.sendToQueue(queue, Buffer.from(JSON.stringify(msgs)))
-        console.log(`Message sent to queue ${queue}`);
+    const sent = await channel.sendToQueue(queue, Buffer.from(JSON.stringify(msgs)))
+    
+    sent ?
+        console.log(`Message ${msgs} sent to queue ${queue} `) :
+        console.log(`Message ${msgs} Fails sending to queue ${queue} `);
+        
+
 
 }
 

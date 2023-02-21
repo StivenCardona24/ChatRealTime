@@ -1,15 +1,18 @@
+import config from "../config";
+
 const amqp = require('amqplib');
+
 
 let channel = "";
 
 const rabbitSetting = {
-    protocol: 'amqp',
-    hostname: 'localhost',
-    port: 5672,
-    username: 'stiven',
-    password: '09Jhon24',
-    vhost: '/',
-    authMechanism: ['PLAIN', 'AMQPLAIN', 'EXTERNAL']
+    protocol: config.protocol,
+    hostname: config.hostname,
+    port: config.portRabbit,
+    username: config.usernameR,
+    password: config.passwordR,
+    vhost: config.vhost,
+    authMechanism: config.authMechanism
 
 }
 
@@ -21,8 +24,6 @@ const getChannel = async () => {
 
 
 async function connect() {
-
-    const queue = "employees";
 
     try {
         const conn = await amqp.connect(rabbitSetting);
@@ -39,17 +40,6 @@ async function connect() {
     
 }
 
-async function createQueue(msgs, channel, queue){
-
-        const res = await channel.assertQueue(queue);
-        console.log("Queue Created...");
-
-        for(let msg in msgs){
-            await channel.sendToQueue(queue, Buffer.from(JSON.stringify(msgs[msg])))
-            console.log(`Message sent to queue ${queue}`);
-        }  
-
-}
 
 
 module.exports = {
